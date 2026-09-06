@@ -20,14 +20,10 @@ export default async function handler(req, res) {
     }
 
 
-    const url =
-      scriptUrl +
-      "?action=config";
-
-
     const response =
       await fetch(
-        url,
+        scriptUrl +
+          "?action=config",
         {
           method: "GET",
           redirect: "follow",
@@ -38,18 +34,6 @@ export default async function handler(req, res) {
 
     const text =
       await response.text();
-
-
-    console.log(
-      "Apps Script status:",
-      response.status
-    );
-
-
-    console.log(
-      "Apps Script response:",
-      text
-    );
 
 
     if (!response.ok) {
@@ -79,7 +63,9 @@ export default async function handler(req, res) {
     try {
 
       data =
-        JSON.parse(text);
+        JSON.parse(
+          text
+        );
 
     }
 
@@ -111,7 +97,9 @@ export default async function handler(req, res) {
 
   catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     return res.status(500).json({

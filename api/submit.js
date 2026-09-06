@@ -1,5 +1,19 @@
 export default async function handler(req, res) {
 
+  if (req.method !== "POST") {
+
+    return res.status(405).json({
+
+      success: false,
+
+      error:
+        "Only POST is allowed."
+
+    });
+
+  }
+
+
   try {
 
     const scriptUrl =
@@ -20,18 +34,38 @@ export default async function handler(req, res) {
     }
 
 
-    const url =
-      scriptUrl +
-      "?action=config";
+    const body = {
+
+      ...req.body,
+
+      action:
+        "submit"
+
+    };
 
 
     const response =
       await fetch(
-        url,
+        scriptUrl,
         {
-          method: "GET",
-          redirect: "follow",
-          cache: "no-store"
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body:
+            JSON.stringify(
+              body
+            ),
+
+          redirect:
+            "follow"
+
         }
       );
 
@@ -40,46 +74,15 @@ export default async function handler(req, res) {
       await response.text();
 
 
-    console.log(
-      "Apps Script status:",
-      response.status
-    );
-
-
-    console.log(
-      "Apps Script response:",
-      text
-    );
-
-
-    if (!response.ok) {
-
-      return res.status(502).json({
-
-        success: false,
-
-        error:
-          "Apps Script HTTP " +
-          response.status,
-
-        details:
-          text.substring(
-            0,
-            1000
-          )
-
-      });
-
-    }
-
-
     let data;
 
 
     try {
 
       data =
-        JSON.parse(text);
+        JSON.parse(
+          text
+        );
 
     }
 
@@ -104,14 +107,22 @@ export default async function handler(req, res) {
 
 
     return res
-      .status(200)
-      .json(data);
+      .status(
+        response.ok
+          ? 200
+          : 502
+      )
+      .json(
+        data
+      );
 
   }
 
   catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     return res.status(500).json({
