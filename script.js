@@ -22,6 +22,11 @@ const loginClass =
     "loginClass"
   );
 
+const loginSection =
+  document.getElementById(
+    "loginSection"
+  );
+
 const loginPin =
   document.getElementById(
     "loginPin"
@@ -352,6 +357,95 @@ function populateLoginClasses(
 
 
 /* =====================================================
+   LOGIN SECTION DROPDOWN
+===================================================== */
+
+function populateLoginSections(
+  selectedClass
+) {
+
+  loginSection.innerHTML =
+    "";
+
+
+  const sections =
+    configuration[
+      selectedClass
+    ];
+
+
+  if (
+    !selectedClass ||
+    !sections ||
+    sections.length === 0
+  ) {
+
+    loginSection.innerHTML =
+      `
+      <option value="">
+        Select class first
+      </option>
+      `;
+
+    loginSection.disabled =
+      true;
+
+    return;
+
+  }
+
+
+  loginSection.innerHTML =
+    `
+    <option value="">
+      Select Section
+    </option>
+    `;
+
+
+  sections.forEach(
+    function(section) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        section;
+
+      option.textContent =
+        section;
+
+
+      loginSection.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  loginSection.disabled =
+    false;
+
+}
+
+
+loginClass.addEventListener(
+  "change",
+  function() {
+
+    populateLoginSections(
+      loginClass.value.trim()
+    );
+
+  }
+);
+
+
+/* =====================================================
    DISPLAY CLASS
 ===================================================== */
 
@@ -432,6 +526,10 @@ async function login() {
     loginClass.value.trim();
 
 
+  const section =
+    loginSection.value.trim();
+
+
   const pin =
     loginPin.value.trim();
 
@@ -440,6 +538,17 @@ async function login() {
 
     showLoginMessage(
       "Please select a class."
+    );
+
+    return;
+
+  }
+
+
+  if (!section) {
+
+    showLoginMessage(
+      "Please select a section."
     );
 
     return;
@@ -496,6 +605,9 @@ async function login() {
               className:
                 className,
 
+              section:
+                section,
+
               pin:
                 pin
 
@@ -529,6 +641,9 @@ async function login() {
 
       className:
         result.className,
+
+      section:
+        result.section,
 
       createdAt:
         Date.now(),
@@ -643,11 +758,18 @@ function openPortal(
   activeClass.textContent =
     displayClass(
       session.className
-    );
+    ) +
+    " - " +
+    session.section;
 
 
   populateFormClass(
     session.className
+  );
+
+
+  populateFormSection(
+    session.section
   );
 
 
@@ -700,68 +822,45 @@ function populateFormClass(
   classSelect.value =
     selectedClass;
 
-
-  populateSections(
-    selectedClass
-  );
-
 }
 
 
 /* =====================================================
-   POPULATE SECTIONS
+   POPULATE FORM SECTION
+   Locks the home-visit form's section field to the
+   section chosen at login, so it never needs to be
+   picked again.
 ===================================================== */
 
-function populateSections(
-  selectedClass
+function populateFormSection(
+  selectedSection
 ) {
 
   sectionSelect.innerHTML =
-    `
-    <option value="">
-      Select Section
-    </option>
-    `;
+    "";
 
 
-  const sections =
-    configuration[
-      selectedClass
-    ];
+  const option =
+    document.createElement(
+      "option"
+    );
 
 
-  if (
-    !sections ||
-    sections.length === 0
-  ) {
-
-    return;
-
-  }
+  option.value =
+    selectedSection;
 
 
-  sections.forEach(
-    function(section) {
-
-      const option =
-        document.createElement(
-          "option"
-        );
+  option.textContent =
+    selectedSection;
 
 
-      option.value =
-        section;
-
-      option.textContent =
-        section;
-
-
-      sectionSelect.appendChild(
-        option
-      );
-
-    }
+  sectionSelect.appendChild(
+    option
   );
+
+
+  sectionSelect.value =
+    selectedSection;
 
 }
 
@@ -982,8 +1081,8 @@ form.addEventListener(
         session.className;
 
 
-      populateSections(
-        session.className
+      populateFormSection(
+        session.section
       );
 
 
@@ -1138,6 +1237,15 @@ function logout() {
 
   loginScreen.classList.remove(
     "hidden"
+  );
+
+
+  loginClass.value =
+    "";
+
+
+  populateLoginSections(
+    ""
   );
 
 

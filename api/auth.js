@@ -37,10 +37,13 @@ export default async function handler(req, res) {
     const body = {
 
       action:
-        "authenticate",
+        "login",
 
       className:
         req.body.className,
+
+      section:
+        req.body.section,
 
       pin:
         req.body.pin
