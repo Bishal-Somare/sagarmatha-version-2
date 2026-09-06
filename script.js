@@ -1,76 +1,53 @@
 /* =====================================================
-   HOME VISIT MANAGEMENT SYSTEM
-===================================================== */
+   HOME VISIT SYSTEM - FRONTEND
+   ===================================================== */
 
 
 /* =====================================================
    ELEMENTS
-===================================================== */
-
-const loginScreen =
-  document.getElementById(
-    "loginScreen"
-  );
-
-const app =
-  document.getElementById(
-    "app"
-  );
-
-const loginClass =
-  document.getElementById(
-    "loginClass"
-  );
-
-const loginPin =
-  document.getElementById(
-    "loginPin"
-  );
-
-const loginButton =
-  document.getElementById(
-    "loginButton"
-  );
-
-const togglePin =
-  document.getElementById(
-    "togglePin"
-  );
-
-const loginMessage =
-  document.getElementById(
-    "loginMessage"
-  );
-
-const activeClass =
-  document.getElementById(
-    "activeClass"
-  );
-
-const logoutButton =
-  document.getElementById(
-    "logoutButton"
-  );
-
-const form =
-  document.getElementById(
-    "homeVisitForm"
-  );
+   ===================================================== */
 
 const classSelect =
   document.getElementById(
     "className"
   );
 
+
 const sectionSelect =
   document.getElementById(
     "section"
   );
 
-const submitButton =
+
+const pinInput =
   document.getElementById(
-    "submitButton"
+    "pin"
   );
+
+
+const unlockButton =
+  document.getElementById(
+    "unlockButton"
+  );
+
+
+const accessCard =
+  document.getElementById(
+    "accessCard"
+  );
+
+
+const formCard =
+  document.getElementById(
+    "formCard"
+  );
+
+
+const form =
+  document.getElementById(
+    "homeVisitForm"
+  );
+
 
 const message =
   document.getElementById(
@@ -78,67 +55,92 @@ const message =
   );
 
 
-let configuration = {};
+const selectedClassBadge =
+  document.getElementById(
+    "selectedClassBadge"
+  );
+
+
+const formClass =
+  document.getElementById(
+    "formClass"
+  );
+
+
+const formSection =
+  document.getElementById(
+    "formSection"
+  );
+
+
+const submitButton =
+  document.getElementById(
+    "submitButton"
+  );
 
 
 /* =====================================================
-   SESSION STORAGE KEY
-===================================================== */
+   STORE CONFIG
+   ===================================================== */
 
-const SESSION_KEY =
-  "homeVisitSession";
-
-
-/* =====================================================
-   SHOW LOGIN MESSAGE
-===================================================== */
-
-function showLoginMessage(
-  text
-) {
-
-  loginMessage.textContent =
-    text;
-
-  loginMessage.className =
-    "login-message error";
-
-}
+let classConfiguration = {};
 
 
 /* =====================================================
-   SHOW FORM MESSAGE
-===================================================== */
+   MESSAGE
+   ===================================================== */
 
 function showMessage(
   text,
-  type
+  type = "info"
 ) {
 
   message.textContent =
     text;
 
   message.className =
-    "message " +
+    "message show " +
     type;
 
 }
 
 
+function hideMessage() {
+
+  message.textContent =
+    "";
+
+  message.className =
+    "message";
+
+}
+
+
 /* =====================================================
-   LOAD CONFIGURATION
-===================================================== */
+   LOAD CLASSES
+   ===================================================== */
 
 async function loadConfiguration() {
 
   try {
 
-    loginClass.innerHTML =
-      `
-      <option value="">
-        Loading classes...
-      </option>
-      `;
+    showMessage(
+      "Loading classes...",
+      "info"
+    );
+
+
+    classSelect.disabled =
+      true;
+
+    sectionSelect.disabled =
+      true;
+
+    pinInput.disabled =
+      true;
+
+    unlockButton.disabled =
+      true;
 
 
     const response =
@@ -162,59 +164,46 @@ async function loadConfiguration() {
 
       throw new Error(
         result.error ||
-        "Unable to load classes."
+        "Unable to load class configuration."
       );
 
     }
 
 
-    configuration =
+    classConfiguration =
       result.classes || {};
 
 
-    const classes =
-      Object.keys(
-        configuration
-      );
+    populateClasses();
 
 
-    if (
-      classes.length === 0
-    ) {
-
-      throw new Error(
-        "No classes found."
-      );
-
-    }
-
-
-    populateLoginClasses(
-      classes
+    showMessage(
+      "Classes loaded successfully.",
+      "success"
     );
 
+
+    setTimeout(
+      hideMessage,
+      1800
+    );
 
   }
 
   catch (error) {
 
-    console.error(
-      error
+    console.error(error);
+
+
+    showMessage(
+      "Unable to load Class/Section: " +
+      error.message,
+      "error"
     );
 
 
-    loginClass.innerHTML =
-      `
-      <option value="">
-        Unable to load classes
-      </option>
-      `;
-
-
-    showLoginMessage(
-      "Unable to load classes: " +
-      error.message
-    );
+    classSelect.disabled =
+      true;
 
   }
 
@@ -222,108 +211,147 @@ async function loadConfiguration() {
 
 
 /* =====================================================
-   CLASS SORTING
-===================================================== */
+   POPULATE CLASSES
+   ===================================================== */
 
-function sortClasses(
-  a,
-  b
-) {
+function populateClasses() {
 
-  const special = [
-    "Montessori",
-    "PG",
-    "Nursery",
-    "LKG",
-    "UKG"
-  ];
+  classSelect.innerHTML =
+    "";
 
 
-  const aIndex =
-    special.indexOf(a);
-
-  const bIndex =
-    special.indexOf(b);
-
-
-  if (
-    aIndex !== -1 ||
-    bIndex !== -1
-  ) {
-
-    if (
-      aIndex === -1
-    ) {
-
-      return 1;
-
-    }
-
-
-    if (
-      bIndex === -1
-    ) {
-
-      return -1;
-
-    }
-
-
-    return (
-      aIndex -
-      bIndex
+  const defaultOption =
+    document.createElement(
+      "option"
     );
 
-  }
+
+  defaultOption.value =
+    "";
 
 
-  const aNumber =
-    Number(a);
-
-  const bNumber =
-    Number(b);
+  defaultOption.textContent =
+    "Select Class";
 
 
-  if (
-    !Number.isNaN(aNumber) &&
-    !Number.isNaN(bNumber)
-  ) {
-
-    return (
-      aNumber -
-      bNumber
-    );
-
-  }
-
-
-  return a.localeCompare(
-    b
+  classSelect.appendChild(
+    defaultOption
   );
 
+
+  const classes =
+    Object.keys(
+      classConfiguration
+    );
+
+
+  classes.forEach(
+    function(className) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        className;
+
+
+      option.textContent =
+        className;
+
+
+      classSelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  classSelect.disabled =
+    classes.length === 0;
+
+
+  sectionSelect.innerHTML =
+    "<option value=''>Select Section</option>";
+
+
+  sectionSelect.disabled =
+    true;
+
 }
 
 
 /* =====================================================
-   LOGIN CLASS DROPDOWN
-===================================================== */
+   CLASS CHANGE
+   ===================================================== */
 
-function populateLoginClasses(
-  classes
-) {
+classSelect.addEventListener(
+  "change",
+  function() {
 
-  loginClass.innerHTML =
-    `
-    <option value="">
-      Select Class
-    </option>
-    `;
+    const selectedClass =
+      classSelect.value;
 
 
-  classes
-    .sort(sortClasses)
-    .forEach(
-      function(className) {
+    sectionSelect.innerHTML =
+      "";
+
+
+    pinInput.value =
+      "";
+
+
+    pinInput.disabled =
+      true;
+
+
+    unlockButton.disabled =
+      true;
+
+
+    if (!selectedClass) {
+
+      sectionSelect.innerHTML =
+        "<option value=''>Select Section</option>";
+
+      sectionSelect.disabled =
+        true;
+
+      return;
+
+    }
+
+
+    const sections =
+      classConfiguration[
+        selectedClass
+      ] || [];
+
+
+    const defaultOption =
+      document.createElement(
+        "option"
+      );
+
+
+    defaultOption.value =
+      "";
+
+
+    defaultOption.textContent =
+      "Select Section";
+
+
+    sectionSelect.appendChild(
+      defaultOption
+    );
+
+
+    sections.forEach(
+      function(section) {
 
         const option =
           document.createElement(
@@ -332,89 +360,55 @@ function populateLoginClasses(
 
 
         option.value =
-          className;
+          section;
 
 
         option.textContent =
-          displayClass(
-            className
-          );
+          section;
 
 
-        loginClass.appendChild(
+        sectionSelect.appendChild(
           option
         );
 
       }
     );
 
-}
 
-
-/* =====================================================
-   DISPLAY CLASS
-===================================================== */
-
-function displayClass(
-  className
-) {
-
-  const special = [
-    "Montessori",
-    "PG",
-    "Nursery",
-    "LKG",
-    "UKG"
-  ];
-
-
-  if (
-    special.includes(
-      className
-    )
-  ) {
-
-    return className;
+    sectionSelect.disabled =
+      sections.length === 0;
 
   }
-
-
-  return (
-    "Class " +
-    className
-  );
-
-}
+);
 
 
 /* =====================================================
-   PIN VISIBILITY
-===================================================== */
+   SECTION CHANGE
+   ===================================================== */
 
-togglePin.addEventListener(
-  "click",
+sectionSelect.addEventListener(
+  "change",
   function() {
 
-    if (
-      loginPin.type ===
-      "password"
-    ) {
+    pinInput.value =
+      "";
 
-      loginPin.type =
-        "text";
 
-      togglePin.textContent =
-        "Hide";
+    const selectedSection =
+      sectionSelect.value;
 
-    }
 
-    else {
+    pinInput.disabled =
+      !selectedSection;
 
-      loginPin.type =
-        "password";
 
-      togglePin.textContent =
-        "Show";
+    unlockButton.disabled =
+      !selectedSection;
+
+
+    if (selectedSection) {
+
+      pinInput.focus();
 
     }
 
@@ -423,23 +417,68 @@ togglePin.addEventListener(
 
 
 /* =====================================================
-   LOGIN
-===================================================== */
+   PIN ENTER
+   ===================================================== */
 
-async function login() {
+pinInput.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      event.preventDefault();
+
+      if (
+        !unlockButton.disabled
+      ) {
+
+        verifyPin();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   VERIFY PIN
+   ===================================================== */
+
+async function verifyPin() {
 
   const className =
-    loginClass.value.trim();
+    classSelect.value;
+
+
+  const section =
+    sectionSelect.value;
 
 
   const pin =
-    loginPin.value.trim();
+    pinInput.value.trim();
 
 
   if (!className) {
 
-    showLoginMessage(
-      "Please select a class."
+    showMessage(
+      "Please select a class.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!section) {
+
+    showMessage(
+      "Please select a section.",
+      "error"
     );
 
     return;
@@ -449,38 +488,31 @@ async function login() {
 
   if (!pin) {
 
-    showLoginMessage(
-      "Please enter the class PIN."
+    showMessage(
+      "Please enter the PIN.",
+      "error"
     );
 
-    loginPin.focus();
+    pinInput.focus();
 
     return;
 
   }
 
 
-  loginButton.disabled =
+  unlockButton.disabled =
     true;
 
 
-  loginButton.innerHTML =
-    `
-    <span>
-      Verifying...
-    </span>
-    `;
-
-
-  loginMessage.className =
-    "login-message";
+  unlockButton.textContent =
+    "Checking PIN...";
 
 
   try {
 
     const response =
       await fetch(
-        "/api/auth",
+        "/api/submit",
         {
 
           method: "POST",
@@ -493,8 +525,14 @@ async function login() {
           body:
             JSON.stringify({
 
+              action:
+                "verifyPin",
+
               className:
                 className,
+
+              section:
+                section,
 
               pin:
                 pin
@@ -516,76 +554,76 @@ async function login() {
 
       throw new Error(
         result.error ||
-        "Authentication failed."
+        "Incorrect PIN."
       );
 
     }
 
 
-    const session = {
+    /* ---------------------------------------------
+       UNLOCK
+       --------------------------------------------- */
 
-      token:
-        result.sessionToken,
-
-      className:
-        result.className,
-
-      createdAt:
-        Date.now(),
-
-      expiresAt:
-        Date.now() +
-        (
-          result.expiresIn *
-          1000
-        )
-
-    };
+    formClass.value =
+      className;
 
 
-    localStorage.setItem(
-      SESSION_KEY,
-      JSON.stringify(
-        session
-      )
+    formSection.value =
+      section;
+
+
+    selectedClassBadge.textContent =
+      className +
+      " • " +
+      section;
+
+
+    accessCard.classList.add(
+      "hidden"
     );
 
 
-    openPortal(
-      session
+    formCard.classList.remove(
+      "hidden"
     );
 
+
+    showMessage(
+      "",
+      "success"
+    );
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
   }
 
   catch (error) {
 
-    console.error(
-      error
+    console.error(error);
+
+
+    showMessage(
+      error.message,
+      "error"
     );
 
 
-    showLoginMessage(
-      error.message
-    );
+    pinInput.select();
 
   }
 
   finally {
 
-    loginButton.disabled =
+    unlockButton.disabled =
       false;
 
-    loginButton.innerHTML =
-      `
-      <span>
-        Enter Portal
-      </span>
 
-      <span>
-        →
-      </span>
-      `;
+    unlockButton.textContent =
+      "🔓 Unlock Form";
 
   }
 
@@ -593,233 +631,18 @@ async function login() {
 
 
 /* =====================================================
-   LOGIN BUTTON
-===================================================== */
+   UNLOCK BUTTON
+   ===================================================== */
 
-loginButton.addEventListener(
+unlockButton.addEventListener(
   "click",
-  login
+  verifyPin
 );
 
 
 /* =====================================================
-   ENTER KEY FOR PIN
-===================================================== */
-
-loginPin.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (
-      event.key ===
-      "Enter"
-    ) {
-
-      login();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   OPEN PORTAL
-===================================================== */
-
-function openPortal(
-  session
-) {
-
-  loginScreen.classList.add(
-    "hidden"
-  );
-
-  app.classList.remove(
-    "hidden"
-  );
-
-
-  activeClass.textContent =
-    displayClass(
-      session.className
-    );
-
-
-  populateFormClass(
-    session.className
-  );
-
-
-  setDefaultDate();
-
-
-  window.scrollTo(
-    {
-      top: 0,
-      behavior: "smooth"
-    }
-  );
-
-}
-
-
-/* =====================================================
-   POPULATE FORM CLASS
-===================================================== */
-
-function populateFormClass(
-  selectedClass
-) {
-
-  classSelect.innerHTML =
-    "";
-
-
-  const option =
-    document.createElement(
-      "option"
-    );
-
-
-  option.value =
-    selectedClass;
-
-
-  option.textContent =
-    displayClass(
-      selectedClass
-    );
-
-
-  classSelect.appendChild(
-    option
-  );
-
-
-  classSelect.value =
-    selectedClass;
-
-
-  populateSections(
-    selectedClass
-  );
-
-}
-
-
-/* =====================================================
-   POPULATE SECTIONS
-===================================================== */
-
-function populateSections(
-  selectedClass
-) {
-
-  sectionSelect.innerHTML =
-    `
-    <option value="">
-      Select Section
-    </option>
-    `;
-
-
-  const sections =
-    configuration[
-      selectedClass
-    ];
-
-
-  if (
-    !sections ||
-    sections.length === 0
-  ) {
-
-    return;
-
-  }
-
-
-  sections.forEach(
-    function(section) {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      option.value =
-        section;
-
-      option.textContent =
-        section;
-
-
-      sectionSelect.appendChild(
-        option
-      );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   SET DATE
-===================================================== */
-
-function setDefaultDate() {
-
-  const dateInput =
-    document.getElementById(
-      "visitDate"
-    );
-
-
-  if (
-    dateInput &&
-    !dateInput.value
-  ) {
-
-    const now =
-      new Date();
-
-
-    const year =
-      now.getFullYear();
-
-
-    const month =
-      String(
-        now.getMonth() + 1
-      ).padStart(
-        2,
-        "0"
-      );
-
-
-    const day =
-      String(
-        now.getDate()
-      ).padStart(
-        2,
-        "0"
-      );
-
-
-    dateInput.value =
-      `${year}-${month}-${day}`;
-
-  }
-
-}
-
-
-/* =====================================================
-   SUBMIT FORM
-===================================================== */
+   FORM SUBMISSION
+   ===================================================== */
 
 form.addEventListener(
   "submit",
@@ -828,29 +651,14 @@ form.addEventListener(
     event.preventDefault();
 
 
-    const session =
-      getSession();
-
-
-    if (!session) {
-
-      logout();
-
-      return;
-
-    }
-
-
     if (
-      !sectionSelect.value
+      !formClass.value ||
+      !formSection.value
     ) {
 
-      showMessage(
-        "Please select a section.",
-        "error"
+      alert(
+        "Class and Section are required."
       );
-
-      sectionSelect.focus();
 
       return;
 
@@ -861,30 +669,22 @@ form.addEventListener(
       true;
 
 
-    submitButton.innerHTML =
-      `
-      <span>
-        Saving...
-      </span>
-      `;
+    submitButton.textContent =
+      "Saving Home Visit...";
 
 
     try {
 
       const formData =
-        new FormData(
-          form
-        );
+        new FormData(form);
 
 
-      const data = {};
+      const data =
+        {};
 
 
       formData.forEach(
-        function(
-          value,
-          key
-        ) {
+        function(value, key) {
 
           data[key] =
             value;
@@ -893,8 +693,13 @@ form.addEventListener(
       );
 
 
-      data.sessionToken =
-        session.token;
+      /*
+       * Include PIN so the backend
+       * verifies it again before saving.
+       */
+
+      data.pin =
+        pinInput.value;
 
 
       const response =
@@ -905,14 +710,14 @@ form.addEventListener(
             method: "POST",
 
             headers: {
+
               "Content-Type":
                 "application/json"
+
             },
 
             body:
-              JSON.stringify(
-                data
-              )
+              JSON.stringify(data)
 
           }
         );
@@ -929,109 +734,45 @@ form.addEventListener(
 
         throw new Error(
           result.error ||
-          "Submission failed."
+          "Unable to save home visit."
         );
 
       }
 
 
-      showMessage(
-
-        "✓ Home visit saved successfully. Record ID: " +
-        result.recordId,
-
-        "success"
-
+      alert(
+        "Home visit saved successfully!\n\nRecord ID: " +
+        result.recordId
       );
 
-
-      /*
-       * Keep class/session.
-       * Only clear student form.
-       */
 
       form.reset();
 
 
-      classSelect.innerHTML =
-        "";
+      formClass.value =
+        classSelect.value;
 
 
-      const classOption =
-        document.createElement(
-          "option"
-        );
+      formSection.value =
+        sectionSelect.value;
 
 
-      classOption.value =
-        session.className;
-
-
-      classOption.textContent =
-        displayClass(
-          session.className
-        );
-
-
-      classSelect.appendChild(
-        classOption
-      );
-
-
-      classSelect.value =
-        session.className;
-
-
-      populateSections(
-        session.className
-      );
-
-
-      setDefaultDate();
-
-
-      window.scrollTo(
-        {
-          top: 0,
-          behavior: "smooth"
-        }
-      );
-
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
 
     }
 
     catch (error) {
 
-      console.error(
-        error
-      );
+      console.error(error);
 
 
-      showMessage(
-        error.message,
-        "error"
-      );
-
-
-      /*
-       * If the backend says the session expired,
-       * return to PIN screen.
-       */
-
-      if (
+      alert(
+        "Unable to save home visit:\n\n" +
         error.message
-          .toLowerCase()
-          .includes(
-            "session"
-          )
-      ) {
-
-        setTimeout(
-          logout,
-          1800
-        );
-
-      }
+      );
 
     }
 
@@ -1041,183 +782,17 @@ form.addEventListener(
         false;
 
 
-      submitButton.innerHTML =
-        `
-        <span>
-          Submit Home Visit
-        </span>
-
-        <span>
-          →
-        </span>
-        `;
+      submitButton.textContent =
+        "Submit Home Visit";
 
     }
 
   }
 );
-
-
-/* =====================================================
-   GET SESSION
-===================================================== */
-
-function getSession() {
-
-  try {
-
-    const raw =
-      localStorage.getItem(
-        SESSION_KEY
-      );
-
-
-    if (!raw) {
-
-      return null;
-
-    }
-
-
-    const session =
-      JSON.parse(
-        raw
-      );
-
-
-    /*
-     * Local expiration check.
-     */
-
-    if (
-      Date.now() >=
-      session.expiresAt
-    ) {
-
-      localStorage.removeItem(
-        SESSION_KEY
-      );
-
-      return null;
-
-    }
-
-
-    return session;
-
-  }
-
-  catch (error) {
-
-    localStorage.removeItem(
-      SESSION_KEY
-    );
-
-    return null;
-
-  }
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logout() {
-
-  localStorage.removeItem(
-    SESSION_KEY
-  );
-
-
-  app.classList.add(
-    "hidden"
-  );
-
-
-  loginScreen.classList.remove(
-    "hidden"
-  );
-
-
-  loginPin.value =
-    "";
-
-
-  loginMessage.textContent =
-    "";
-
-
-  loginMessage.className =
-    "login-message";
-
-
-  message.textContent =
-    "";
-
-  message.className =
-    "message";
-
-
-  window.scrollTo(
-    {
-      top: 0,
-      behavior: "smooth"
-    }
-  );
-
-}
-
-
-logoutButton.addEventListener(
-  "click",
-  function() {
-
-    const confirmLogout =
-      window.confirm(
-        "Are you sure you want to logout?"
-      );
-
-
-    if (
-      confirmLogout
-    ) {
-
-      logout();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   CHECK EXISTING SESSION
-===================================================== */
-
-function checkExistingSession() {
-
-  const session =
-    getSession();
-
-
-  if (session) {
-
-    openPortal(
-      session
-    );
-
-  }
-
-}
 
 
 /* =====================================================
    START
-===================================================== */
+   ===================================================== */
 
-loadConfiguration()
-  .then(
-    checkExistingSession
-  );
+loadConfiguration();

@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Home Visit Management System</title>
+  <title>Home Visit System</title>
 
   <link
     rel="stylesheet"
@@ -22,182 +22,73 @@
 
 <body>
 
+<div class="app-shell">
 
-  <!-- =================================================
-       LOGIN PORTAL
-  ================================================== -->
 
-  <div
-    id="loginScreen"
-    class="login-screen"
-  >
+  <!-- HEADER -->
 
-    <div class="login-card">
+  <header class="top-header">
 
-      <div class="login-icon">
+    <div class="brand">
+
+      <div class="brand-icon">
         🏠
       </div>
 
-      <h1>
-        Home Visit Portal
-      </h1>
+      <div>
 
-      <p class="login-subtitle">
-        Select your class and enter the class PIN
-      </p>
+        <h1>
+          Home Visit System
+        </h1>
 
-
-      <div
-        id="loginMessage"
-        class="login-message"
-      ></div>
-
-
-      <div class="login-field">
-
-        <label for="loginClass">
-          Class
-        </label>
-
-        <select
-          id="loginClass"
-        >
-
-          <option value="">
-            Loading classes...
-          </option>
-
-        </select>
+        <p>
+          Student Home Visit Record
+        </p>
 
       </div>
-
-
-      <div class="login-field">
-
-        <label for="loginPin">
-          Class PIN
-        </label>
-
-        <div class="pin-wrapper">
-
-          <input
-            id="loginPin"
-            type="password"
-            placeholder="Enter class PIN"
-            autocomplete="off"
-          >
-
-          <button
-            type="button"
-            id="togglePin"
-            class="pin-toggle"
-          >
-            Show
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <button
-        id="loginButton"
-        class="login-button"
-      >
-
-        <span>
-          Enter Portal
-        </span>
-
-        <span>
-          →
-        </span>
-
-      </button>
-
-
-      <p class="login-note">
-        You only need to enter the PIN once.
-      </p>
 
     </div>
 
-  </div>
+  </header>
 
 
 
-  <!-- =================================================
-       MAIN APPLICATION
-  ================================================== -->
+  <!-- MAIN -->
 
-  <div
-    id="app"
-    class="app hidden"
-  >
-
-    <div class="page">
+  <main>
 
 
-      <!-- HEADER -->
+    <!-- ACCESS CARD -->
 
-      <header class="header">
+    <section
+      id="accessCard"
+      class="card access-card"
+    >
 
-        <div class="header-left">
+      <div class="card-heading">
 
-          <div class="header-icon">
-            🏠
-          </div>
+        <div>
 
-          <div>
+          <span class="eyebrow">
+            SECURE ACCESS
+          </span>
 
-            <div class="system-label">
-              HOME VISIT MANAGEMENT SYSTEM
-            </div>
+          <h2>
+            Select Class & Section
+          </h2>
 
-            <h1>
-              Home Visit Form
-            </h1>
-
-            <p>
-              Record student home visit information
-            </p>
-
-          </div>
+          <p>
+            Enter the PIN assigned to this class and section.
+          </p>
 
         </div>
 
-
-        <div class="session-area">
-
-          <div class="logged-class">
-
-            <span>
-              Logged in as
-            </span>
-
-            <strong
-              id="activeClass"
-            >
-              —
-            </strong>
-
-          </div>
-
-
-          <button
-            type="button"
-            id="logoutButton"
-            class="logout-button"
-          >
-            Logout
-          </button>
-
+        <div class="lock-icon">
+          🔐
         </div>
 
-      </header>
+      </div>
 
-
-      <!-- MESSAGE -->
 
       <div
         id="message"
@@ -205,33 +96,136 @@
       ></div>
 
 
+      <div class="access-grid">
 
-      <!-- FORM -->
+
+        <div class="field">
+
+          <label for="className">
+            Class
+          </label>
+
+          <select
+            id="className"
+            disabled
+          >
+
+            <option>
+              Loading classes...
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="section">
+            Section
+          </label>
+
+          <select
+            id="section"
+            disabled
+          >
+
+            <option>
+              Select Section
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field pin-field">
+
+          <label for="pin">
+            Class PIN
+          </label>
+
+          <input
+            id="pin"
+            type="password"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="Enter PIN"
+            maxlength="20"
+            disabled
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="unlockButton"
+        type="button"
+        disabled
+      >
+        🔓 Unlock Form
+      </button>
+
+
+    </section>
+
+
+
+    <!-- HOME VISIT FORM -->
+
+    <section
+      id="formCard"
+      class="card form-card hidden"
+    >
+
+      <div class="form-top">
+
+        <div>
+
+          <span class="eyebrow">
+            HOME VISIT
+          </span>
+
+          <h2>
+            Student Information
+          </h2>
+
+        </div>
+
+
+        <div
+          id="selectedClassBadge"
+          class="class-badge"
+        >
+        </div>
+
+      </div>
+
+
 
       <form
         id="homeVisitForm"
-        autocomplete="off"
       >
 
 
-        <!-- STUDENT INFORMATION -->
+        <!-- VISIT INFORMATION -->
 
-        <section class="card">
+        <section class="form-section">
 
-          <div class="section-heading">
+          <div class="section-title">
 
-            <div class="section-number">
-              01
-            </div>
+            <span>01</span>
 
             <div>
 
-              <h2>
-                Student Information
-              </h2>
+              <h3>
+                Visit Information
+              </h3>
 
               <p>
-                Enter the basic information of the student.
+                Basic details about the visit.
               </p>
 
             </div>
@@ -239,194 +233,16 @@
           </div>
 
 
-          <div class="form-grid">
+          <div class="field">
 
+            <label>
+              Visit Date
+            </label>
 
-            <div class="field full">
-
-              <label for="studentName">
-                Student Name
-                <span>*</span>
-              </label>
-
-              <input
-                id="studentName"
-                name="studentName"
-                type="text"
-                placeholder="Enter student name"
-                required
-              >
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="className">
-                Class
-                <span>*</span>
-              </label>
-
-              <select
-                id="className"
-                name="className"
-                required
-              ></select>
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="section">
-                Section
-                <span>*</span>
-              </label>
-
-              <select
-                id="section"
-                name="section"
-                required
-              >
-
-                <option value="">
-                  Select Section
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="rollNo">
-                Roll Number
-                <span>*</span>
-              </label>
-
-              <input
-                id="rollNo"
-                name="rollNo"
-                type="number"
-                min="1"
-                placeholder="Roll number"
-                required
-              >
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="siblings">
-                No. of Siblings
-              </label>
-
-              <input
-                id="siblings"
-                name="siblings"
-                type="number"
-                min="0"
-                placeholder="Number of siblings"
-              >
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="fatherName">
-                Father's Name
-              </label>
-
-              <input
-                id="fatherName"
-                name="fatherName"
-                type="text"
-                placeholder="Father's name"
-              >
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="motherName">
-                Mother's Name
-              </label>
-
-              <input
-                id="motherName"
-                name="motherName"
-                type="text"
-                placeholder="Mother's name"
-              >
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="occupation">
-                Occupation
-              </label>
-
-              <input
-                id="occupation"
-                name="occupation"
-                type="text"
-                placeholder="Parent/Guardian occupation"
-              >
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="contact">
-                Contact Number
-              </label>
-
-              <input
-                id="contact"
-                name="contact"
-                type="tel"
-                placeholder="Contact number"
-              >
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="visitDate">
-                Visit Date
-              </label>
-
-              <input
-                id="visitDate"
-                name="visitDate"
-                type="date"
-              >
-
-            </div>
-
-
-            <div class="field full">
-
-              <label for="address">
-                Address
-              </label>
-
-              <textarea
-                id="address"
-                name="address"
-                rows="3"
-                placeholder="Enter student's address"
-              ></textarea>
-
-            </div>
+            <input
+              type="date"
+              name="visitDate"
+            >
 
           </div>
 
@@ -434,24 +250,204 @@
 
 
 
-        <!-- HOME ACTIVITIES -->
+        <!-- STUDENT INFORMATION -->
 
-        <section class="card">
+        <section class="form-section">
 
-          <div class="section-heading">
+          <div class="section-title">
 
-            <div class="section-number">
-              02
-            </div>
+            <span>02</span>
 
             <div>
 
-              <h2>
-                Home Activities
-              </h2>
+              <h3>
+                Student Information
+              </h3>
 
               <p>
-                Information about the student's activities at home.
+                Enter the student's basic information.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="grid">
+
+
+            <div class="field full">
+
+              <label>
+                Student Name *
+              </label>
+
+              <input
+                type="text"
+                name="studentName"
+                required
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Class *
+              </label>
+
+              <input
+                type="text"
+                id="formClass"
+                name="className"
+                readonly
+                required
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Section *
+              </label>
+
+              <input
+                type="text"
+                id="formSection"
+                name="section"
+                readonly
+                required
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Roll No *
+              </label>
+
+              <input
+                type="number"
+                name="rollNo"
+                min="1"
+                required
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                No. of Siblings
+              </label>
+
+              <input
+                type="number"
+                name="siblings"
+                min="0"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Father's Name
+              </label>
+
+              <input
+                type="text"
+                name="fatherName"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Mother's Name
+              </label>
+
+              <input
+                type="text"
+                name="motherName"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Occupation
+              </label>
+
+              <input
+                type="text"
+                name="occupation"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Contact
+              </label>
+
+              <input
+                type="tel"
+                name="contact"
+              >
+
+            </div>
+
+
+            <div class="field full">
+
+              <label>
+                Address
+              </label>
+
+              <textarea
+                name="address"
+                rows="3"
+              ></textarea>
+
+            </div>
+
+
+          </div>
+
+        </section>
+
+
+
+        <!-- STUDENT ACTIVITIES -->
+
+        <section class="form-section">
+
+          <div class="section-title">
+
+            <span>03</span>
+
+            <div>
+
+              <h3>
+                Student Activities
+              </h3>
+
+              <p>
+                Observe the student's activities at home.
               </p>
 
             </div>
@@ -461,15 +457,12 @@
 
           <div class="field">
 
-            <label for="readingHomework">
-              Where does the student do reading homework?
+            <label>
+              He/She does reading homework in
             </label>
 
             <textarea
-              id="readingHomework"
               name="readingHomework"
-              rows="3"
-              placeholder="Write your answer..."
             ></textarea>
 
           </div>
@@ -477,15 +470,12 @@
 
           <div class="field">
 
-            <label for="writingHomework">
-              Where does the student do writing homework?
+            <label>
+              He/She does writing homework in
             </label>
 
             <textarea
-              id="writingHomework"
               name="writingHomework"
-              rows="3"
-              placeholder="Write your answer..."
             ></textarea>
 
           </div>
@@ -493,22 +483,18 @@
 
           <div class="field">
 
-            <label for="interestedIn">
-              What is the student interested in?
+            <label>
+              He/She is much interested in
             </label>
 
             <textarea
-              id="interestedIn"
               name="interestedIn"
-              rows="3"
-              placeholder="Sports, music, drawing, reading, etc."
             ></textarea>
 
           </div>
 
 
-
-          <!-- RADIO QUESTIONS -->
+          <!-- RADIO -->
 
           <div class="question">
 
@@ -516,33 +502,33 @@
               Behaviour With Family
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="familyBehaviour"
                   value="Good"
                 >
-                <span>Good</span>
+                Good
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="familyBehaviour"
                   value="Average"
                 >
-                <span>Average</span>
+                Average
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="familyBehaviour"
                   value="Bad"
                 >
-                <span>Bad</span>
+                Bad
               </label>
 
             </div>
@@ -556,33 +542,33 @@
               Response To Guests
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guestResponse"
                   value="Properly"
                 >
-                <span>Properly</span>
+                Properly
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guestResponse"
                   value="Average"
                 >
-                <span>Average</span>
+                Average
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guestResponse"
                   value="Coldly"
                 >
-                <span>Coldly</span>
+                Coldly
               </label>
 
             </div>
@@ -596,33 +582,33 @@
               Keeps Things In Original Place
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="keepThings"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="keepThings"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="keepThings"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -636,33 +622,33 @@
               Eats Junk Food
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="junkFood"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="junkFood"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="junkFood"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -673,36 +659,36 @@
           <div class="question">
 
             <label>
-              Mobile / Laptop Usage
+              Mobile/Laptop
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="mobileLaptop"
                   value="Properly"
                 >
-                <span>Properly</span>
+                Properly
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="mobileLaptop"
                   value="Commonly"
                 >
-                <span>Commonly</span>
+                Commonly
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="mobileLaptop"
                   value="Too much"
                 >
-                <span>Too Much</span>
+                Too much
               </label>
 
             </div>
@@ -716,33 +702,33 @@
               Watch TV
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="tvWatching"
                   value="Sometimes only"
                 >
-                <span>Sometimes Only</span>
+                Sometimes only
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="tvWatching"
                   value="Commonly"
                 >
-                <span>Commonly</span>
+                Commonly
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="tvWatching"
                   value="Too much"
                 >
-                <span>Too Much</span>
+                Too much
               </label>
 
             </div>
@@ -756,33 +742,33 @@
               Assists Household Activities
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="householdActivities"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="householdActivities"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="householdActivities"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -793,36 +779,36 @@
           <div class="question">
 
             <label>
-              Washes Personal Clothes / Dishes
+              Washes Personal Clothes/Dishes
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="personalClothes"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="personalClothes"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="personalClothes"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -832,18 +818,17 @@
 
           <div class="field">
 
-            <label for="schoolOpinion">
+            <label>
               What does the student say about school, teacher and friends?
             </label>
 
             <textarea
-              id="schoolOpinion"
               name="schoolOpinion"
               rows="4"
-              placeholder="Write the student's response..."
             ></textarea>
 
           </div>
+
 
         </section>
 
@@ -851,19 +836,17 @@
 
         <!-- GUARDIAN -->
 
-        <section class="card">
+        <section class="form-section">
 
-          <div class="section-heading">
+          <div class="section-title">
 
-            <div class="section-number">
-              03
-            </div>
+            <span>04</span>
 
             <div>
 
-              <h2>
+              <h3>
                 Guardian Information
-              </h2>
+              </h3>
 
               <p>
                 Information about guardian involvement.
@@ -874,41 +857,39 @@
           </div>
 
 
-          <div
-            class="question"
-          >
+          <div class="question">
 
             <label>
               Guardian Appreciates Child
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianAppreciates"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianAppreciates"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianAppreciates"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -922,33 +903,33 @@
               Guardian Involves Child In Social Activities
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianSocialActivities"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianSocialActivities"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianSocialActivities"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -962,33 +943,33 @@
               Guardian Keeps Child Informed About Family
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianFamilyInformation"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianFamilyInformation"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianFamilyInformation"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -1002,33 +983,33 @@
               Guardian Gives Time To Child
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianTime"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianTime"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianTime"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -1042,33 +1023,33 @@
               Guardian Attends Guardian Programs
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianPrograms"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianPrograms"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianPrograms"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
@@ -1082,38 +1063,39 @@
               Guardian Encourages Child Despite Simple Mistakes
             </label>
 
-            <div class="options">
+            <div class="radio-group">
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianMistakes"
                   value="Yes"
                 >
-                <span>Yes</span>
+                Yes
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianMistakes"
                   value="No"
                 >
-                <span>No</span>
+                No
               </label>
 
-              <label class="option">
+              <label>
                 <input
                   type="radio"
                   name="guardianMistakes"
                   value="Sometimes"
                 >
-                <span>Sometimes</span>
+                Sometimes
               </label>
 
             </div>
 
           </div>
+
 
         </section>
 
@@ -1121,22 +1103,20 @@
 
         <!-- NEW STUDENT -->
 
-        <section class="card">
+        <section class="form-section">
 
-          <div class="section-heading">
+          <div class="section-title">
 
-            <div class="section-number">
-              04
-            </div>
+            <span>05</span>
 
             <div>
 
-              <h2>
+              <h3>
                 New Student Information
-              </h2>
+              </h3>
 
               <p>
-                Enter details if another student is identified during the visit.
+                Optional information about a new student.
               </p>
 
             </div>
@@ -1144,19 +1124,17 @@
           </div>
 
 
-          <div class="form-grid">
+          <div class="grid">
 
             <div class="field">
 
-              <label for="newStudentName">
+              <label>
                 New Student Name
               </label>
 
               <input
-                id="newStudentName"
-                name="newStudentName"
                 type="text"
-                placeholder="Student name"
+                name="newStudentName"
               >
 
             </div>
@@ -1164,15 +1142,13 @@
 
             <div class="field">
 
-              <label for="newStudentAddress">
+              <label>
                 New Student Address
               </label>
 
               <input
-                id="newStudentAddress"
-                name="newStudentAddress"
                 type="text"
-                placeholder="Student address"
+                name="newStudentAddress"
               >
 
             </div>
@@ -1191,78 +1167,38 @@
             type="submit"
             id="submitButton"
           >
-
-            <span>
-              Submit Home Visit
-            </span>
-
-            <span>
-              →
-            </span>
-
+            Submit Home Visit
           </button>
-
-          <p>
-            Review the information before submitting.
-          </p>
 
         </div>
 
 
       </form>
 
+    </section>
 
 
-      <!-- FOOTER -->
-
-      <footer class="site-footer">
-
-        <div class="footer-brand">
-          Home Visit Management System
-        </div>
-
-        <div class="developers">
-
-          <div class="developer">
-
-            <strong>
-              Jay Bhandari
-            </strong>
-
-            <a href="tel:9744313036">
-              9744313036
-            </a>
-
-          </div>
+  </main>
 
 
-          <span class="footer-dot">
-            •
-          </span>
+
+  <!-- FOOTER -->
+
+  <footer class="site-footer">
+
+    Developed by Jay Bhandari
+    contact:9744313036
+    and
+    Bishal Somare Magar
+    contact:9848134815
+
+  </footer>
 
 
-          <div class="developer">
-
-            <strong>
-              Bishal Somare Magar
-            </strong>
-
-            <a href="tel:9848134815">
-              9848134815
-            </a>
-
-          </div>
-
-        </div>
-
-      </footer>
-
-    </div>
-
-  </div>
+</div>
 
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 
