@@ -740,11 +740,16 @@ form.addEventListener(
       }
 
 
-      alert(
-        "Home visit saved successfully!\n\nRecord ID: " +
-        result.recordId
-      );
+     const recordId =
+  result.recordId ||
+  result.data?.recordId ||
+  "Generated successfully";
 
+alert(
+  "Home visit saved successfully!\n\n" +
+  "Record ID: " +
+  recordId
+);
 
       form.reset();
 
