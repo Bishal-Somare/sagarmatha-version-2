@@ -77,6 +77,21 @@ const submitButton =
     "submitButton"
   );
 
+const captureLocationButton =
+  document.getElementById(
+    "captureLocationButton"
+  );
+
+const visitLocationInput =
+  document.getElementById(
+    "visitLocation"
+  );
+
+const visitLocationDisplay =
+  document.getElementById(
+    "visitLocationDisplay"
+  );
+
 const message =
   document.getElementById(
     "message"
@@ -1514,6 +1529,30 @@ function populateFormWithRecord(
     }
   );
 
+
+  if (
+    record.visitLocation
+  ) {
+
+    const coords =
+      String(record.visitLocation)
+        .replace(
+          "https://www.google.com/maps?q=",
+          ""
+        );
+
+    visitLocationDisplay.value =
+      coords;
+
+  }
+
+  else {
+
+    visitLocationDisplay.value =
+      "";
+
+  }
+
 }
 
 
@@ -1568,7 +1607,108 @@ function resetFormForSession(
 
   setDefaultDate();
 
+
+  visitLocationDisplay.value =
+    "";
+
 }
+
+
+/* =====================================================
+   CAPTURE VISIT LOCATION
+   Uses the device's GPS (via the browser Geolocation API) to
+   record where the home visit is taking place, saved as a
+   Google Maps link.
+===================================================== */
+
+captureLocationButton.addEventListener(
+  "click",
+  function() {
+
+    if (
+      !navigator.geolocation
+    ) {
+
+      showMessage(
+        "Location capture isn't supported on this device/browser.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    captureLocationButton.disabled =
+      true;
+
+    const originalLabel =
+      captureLocationButton.textContent;
+
+    captureLocationButton.textContent =
+      "Locating...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+      function(
+        position
+      ) {
+
+        const lat =
+          position.coords.latitude.toFixed(6);
+
+        const lng =
+          position.coords.longitude.toFixed(6);
+
+
+        visitLocationInput.value =
+          "https://www.google.com/maps?q=" +
+          lat +
+          "," +
+          lng;
+
+        visitLocationDisplay.value =
+          lat + ", " + lng;
+
+
+        captureLocationButton.disabled =
+          false;
+
+        captureLocationButton.textContent =
+          originalLabel;
+
+      },
+
+      function(
+        error
+      ) {
+
+        captureLocationButton.disabled =
+          false;
+
+        captureLocationButton.textContent =
+          originalLabel;
+
+
+        showMessage(
+          "Couldn't get location: " +
+          (error.message || "permission denied or unavailable."),
+          "error"
+        );
+
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+
+    );
+
+  }
+);
 
 
 /* =====================================================

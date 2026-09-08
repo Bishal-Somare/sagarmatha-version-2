@@ -540,6 +540,45 @@
 
             </div>
 
+
+            <div class="field full">
+
+              <label for="visitLocationDisplay">
+                Visit Location
+              </label>
+
+              <div class="location-row">
+
+                <input
+                  id="visitLocationDisplay"
+                  type="text"
+                  placeholder="Not captured yet"
+                  readonly
+                >
+
+                <button
+                  type="button"
+                  id="captureLocationButton"
+                  class="location-button"
+                >
+                  📍 Capture Location
+                </button>
+
+              </div>
+
+              <input
+                type="hidden"
+                id="visitLocation"
+                name="visitLocation"
+                value=""
+              >
+
+              <p class="field-hint">
+                Captures the home's GPS location as a Google Maps link, using this device's current position.
+              </p>
+
+            </div>
+
           </div>
 
         </section>
@@ -1285,6 +1324,22 @@
                 name="newStudentAddress"
                 type="text"
                 placeholder="Student address"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="newStudentContact">
+                New Student Contact
+              </label>
+
+              <input
+                id="newStudentContact"
+                name="newStudentContact"
+                type="tel"
+                placeholder="Contact number"
               >
 
             </div>
