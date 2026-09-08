@@ -225,6 +225,91 @@
       ></div>
 
 
+      <!-- MODE SWITCH -->
+
+      <div class="mode-switch">
+
+        <button
+          type="button"
+          id="newModeButton"
+          class="mode-button active"
+          data-mode="new"
+        >
+          + New Home Visit
+        </button>
+
+        <button
+          type="button"
+          id="editModeButton"
+          class="mode-button"
+          data-mode="edit"
+        >
+          ✎ Edit Existing Record
+        </button>
+
+      </div>
+
+
+      <!-- EDIT PANEL -->
+
+      <div
+        id="editPanel"
+        class="edit-panel hidden"
+      >
+
+        <div class="edit-header">
+
+          <h2>
+            Edit Existing Record
+          </h2>
+
+          <p>
+            Select a student you already recorded during a home visit for this class/section to update their information.
+          </p>
+
+        </div>
+
+
+        <div class="edit-search">
+
+          <div class="field">
+
+            <label for="editStudentSelect">
+              Select Student
+            </label>
+
+            <select
+              id="editStudentSelect"
+            >
+
+              <option value="">
+                Loading students...
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <button
+            type="button"
+            id="loadRecordButton"
+            class="primary-button"
+          >
+            Load Record
+          </button>
+
+        </div>
+
+
+        <div
+          id="recordStatus"
+          class="record-status"
+        ></div>
+
+      </div>
+
+
 
       <!-- FORM -->
 
@@ -232,6 +317,13 @@
         id="homeVisitForm"
         autocomplete="off"
       >
+
+        <input
+          type="hidden"
+          id="recordId"
+          name="recordId"
+          value=""
+        >
 
 
         <!-- STUDENT INFORMATION -->
@@ -1220,6 +1312,14 @@
               →
             </span>
 
+          </button>
+
+          <button
+            type="button"
+            id="cancelEditButton"
+            class="mode-button hidden"
+          >
+            ← Back To Student List
           </button>
 
           <p>

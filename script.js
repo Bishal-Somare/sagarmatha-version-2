@@ -82,8 +82,57 @@ const message =
     "message"
   );
 
+const newModeButton =
+  document.getElementById(
+    "newModeButton"
+  );
+
+const editModeButton =
+  document.getElementById(
+    "editModeButton"
+  );
+
+const editPanel =
+  document.getElementById(
+    "editPanel"
+  );
+
+const editStudentSelect =
+  document.getElementById(
+    "editStudentSelect"
+  );
+
+const loadRecordButton =
+  document.getElementById(
+    "loadRecordButton"
+  );
+
+const recordStatus =
+  document.getElementById(
+    "recordStatus"
+  );
+
+const cancelEditButton =
+  document.getElementById(
+    "cancelEditButton"
+  );
+
+const recordIdInput =
+  document.getElementById(
+    "recordId"
+  );
+
 
 let configuration = {};
+
+
+/*
+ * "create" -> submitting the form saves a brand new
+ *             home visit (existing behaviour).
+ * "update" -> submitting the form updates the record
+ *             currently loaded from the edit panel.
+ */
+let submitMode = "create";
 
 
 /* =====================================================
@@ -776,6 +825,11 @@ function openPortal(
   setDefaultDate();
 
 
+  showPanel(
+    "new"
+  );
+
+
   window.scrollTo(
     {
       top: 0,
@@ -917,6 +971,607 @@ function setDefaultDate() {
 
 
 /* =====================================================
+   SHOW PANEL
+   Switches between the "New Home Visit" form and the
+   "Edit Existing Record" student picker.
+===================================================== */
+
+function showPanel(
+  target
+) {
+
+  if (
+    target === "new"
+  ) {
+
+    newModeButton.classList.add(
+      "active"
+    );
+
+    editModeButton.classList.remove(
+      "active"
+    );
+
+    editPanel.classList.add(
+      "hidden"
+    );
+
+    form.classList.remove(
+      "hidden"
+    );
+
+    cancelEditButton.classList.add(
+      "hidden"
+    );
+
+    submitMode =
+      "create";
+
+    recordIdInput.value =
+      "";
+
+    submitButton.innerHTML =
+      `
+      <span>
+        Submit Home Visit
+      </span>
+
+      <span>
+        →
+      </span>
+      `;
+
+  }
+
+  else {
+
+    editModeButton.classList.add(
+      "active"
+    );
+
+    newModeButton.classList.remove(
+      "active"
+    );
+
+    form.classList.add(
+      "hidden"
+    );
+
+    editPanel.classList.remove(
+      "hidden"
+    );
+
+    cancelEditButton.classList.add(
+      "hidden"
+    );
+
+    recordStatus.textContent =
+      "";
+
+    recordStatus.className =
+      "record-status";
+
+    loadStudentList();
+
+  }
+
+}
+
+
+newModeButton.addEventListener(
+  "click",
+  function() {
+
+    showPanel(
+      "new"
+    );
+
+  }
+);
+
+
+editModeButton.addEventListener(
+  "click",
+  function() {
+
+    showPanel(
+      "edit"
+    );
+
+  }
+);
+
+
+cancelEditButton.addEventListener(
+  "click",
+  function() {
+
+    const session =
+      getSession();
+
+
+    if (session) {
+
+      resetFormForSession(
+        session
+      );
+
+    }
+
+
+    showPanel(
+      "edit"
+    );
+
+  }
+);
+
+
+/* =====================================================
+   LOAD STUDENT LIST
+   Populates the "Edit Existing Record" dropdown with the
+   students already recorded for the logged-in class and
+   section.
+===================================================== */
+
+async function loadStudentList() {
+
+  const session =
+    getSession();
+
+
+  if (!session) {
+
+    logout();
+
+    return;
+
+  }
+
+
+  editStudentSelect.innerHTML =
+    `
+    <option value="">
+      Loading students...
+    </option>
+    `;
+
+  editStudentSelect.disabled =
+    true;
+
+
+  try {
+
+    const params =
+      new URLSearchParams(
+        {
+          className: session.className,
+          section: session.section,
+          sessionToken: session.token
+        }
+      );
+
+
+    const response =
+      await fetch(
+        "/api/students?" +
+        params.toString(),
+        {
+          method: "GET",
+          cache: "no-store"
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+        result.error ||
+        "Unable to load students."
+      );
+
+    }
+
+
+    const students =
+      result.students ||
+      [];
+
+
+    if (
+      students.length === 0
+    ) {
+
+      editStudentSelect.innerHTML =
+        `
+        <option value="">
+          No records found yet
+        </option>
+        `;
+
+      editStudentSelect.disabled =
+        true;
+
+      return;
+
+    }
+
+
+    editStudentSelect.innerHTML =
+      `
+      <option value="">
+        Select a student
+      </option>
+      `;
+
+    editStudentSelect.disabled =
+      false;
+
+
+    students.forEach(
+      function(student) {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          student.recordId;
+
+
+        const rollLabel =
+          student.rollNo
+            ? " (Roll " + student.rollNo + ")"
+            : "";
+
+        const dateLabel =
+          student.visitDate
+            ? " - " + student.visitDate
+            : "";
+
+
+        option.textContent =
+          student.studentName +
+          rollLabel +
+          dateLabel;
+
+
+        editStudentSelect.appendChild(
+          option
+        );
+
+      }
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    editStudentSelect.innerHTML =
+      `
+      <option value="">
+        Unable to load students
+      </option>
+      `;
+
+    editStudentSelect.disabled =
+      true;
+
+
+    recordStatus.textContent =
+      error.message;
+
+    recordStatus.className =
+      "record-status error";
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD RECORD
+   Fetches the full record for the selected student and
+   fills the home-visit form with it, ready for editing.
+===================================================== */
+
+loadRecordButton.addEventListener(
+  "click",
+  async function() {
+
+    const session =
+      getSession();
+
+
+    if (!session) {
+
+      logout();
+
+      return;
+
+    }
+
+
+    const recordId =
+      editStudentSelect.value;
+
+
+    if (!recordId) {
+
+      recordStatus.textContent =
+        "Please select a student first.";
+
+      recordStatus.className =
+        "record-status error";
+
+      return;
+
+    }
+
+
+    loadRecordButton.disabled =
+      true;
+
+
+    const originalLabel =
+      loadRecordButton.textContent;
+
+
+    loadRecordButton.textContent =
+      "Loading...";
+
+
+    recordStatus.textContent =
+      "";
+
+    recordStatus.className =
+      "record-status";
+
+
+    try {
+
+      const params =
+        new URLSearchParams(
+          {
+            className: session.className,
+            section: session.section,
+            sessionToken: session.token,
+            recordId: recordId
+          }
+        );
+
+
+      const response =
+        await fetch(
+          "/api/record?" +
+          params.toString(),
+          {
+            method: "GET",
+            cache: "no-store"
+          }
+        );
+
+
+      const result =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !result.success
+      ) {
+
+        throw new Error(
+          result.error ||
+          "Unable to load record."
+        );
+
+      }
+
+
+      populateFormWithRecord(
+        result.record
+      );
+
+
+      submitMode =
+        "update";
+
+
+      editPanel.classList.add(
+        "hidden"
+      );
+
+      form.classList.remove(
+        "hidden"
+      );
+
+      cancelEditButton.classList.remove(
+        "hidden"
+      );
+
+
+      submitButton.innerHTML =
+        `
+        <span>
+          Update Home Visit
+        </span>
+
+        <span>
+          →
+        </span>
+        `;
+
+
+      window.scrollTo(
+        {
+          top: 0,
+          behavior: "smooth"
+        }
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      recordStatus.textContent =
+        error.message;
+
+      recordStatus.className =
+        "record-status error";
+
+    }
+
+    finally {
+
+      loadRecordButton.disabled =
+        false;
+
+      loadRecordButton.textContent =
+        originalLabel;
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   POPULATE FORM WITH RECORD
+   Fills every matching form field (text, textarea, radio)
+   from a record object returned by /api/record.
+===================================================== */
+
+function populateFormWithRecord(
+  record
+) {
+
+  const fields =
+    form.querySelectorAll(
+      "[name]"
+    );
+
+
+  fields.forEach(
+    function(field) {
+
+      const key =
+        field.name;
+
+
+      if (
+        !(key in record)
+      ) {
+
+        return;
+
+      }
+
+
+      const value =
+        record[key] !== undefined &&
+        record[key] !== null
+          ? record[key]
+          : "";
+
+
+      if (
+        field.type === "radio"
+      ) {
+
+        field.checked =
+          String(field.value) ===
+          String(value);
+
+      }
+
+      else {
+
+        field.value =
+          value;
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   RESET FORM FOR SESSION
+   Shared reset logic: clears the home-visit form back to
+   a blank "new visit" state for the logged-in class and
+   section. Used after a successful submit/update, and
+   when cancelling out of the edit panel.
+===================================================== */
+
+function resetFormForSession(
+  session
+) {
+
+  form.reset();
+
+
+  classSelect.innerHTML =
+    "";
+
+
+  const classOption =
+    document.createElement(
+      "option"
+    );
+
+
+  classOption.value =
+    session.className;
+
+
+  classOption.textContent =
+    displayClass(
+      session.className
+    );
+
+
+  classSelect.appendChild(
+    classOption
+  );
+
+
+  classSelect.value =
+    session.className;
+
+
+  populateFormSection(
+    session.section
+  );
+
+
+  setDefaultDate();
+
+}
+
+
+/* =====================================================
    SUBMIT FORM
 ===================================================== */
 
@@ -996,9 +1651,19 @@ form.addEventListener(
         session.token;
 
 
+      const isUpdate =
+        submitMode === "update";
+
+
+      const endpoint =
+        isUpdate
+          ? "/api/update"
+          : "/api/submit";
+
+
       const response =
         await fetch(
-          "/api/submit",
+          endpoint,
           {
 
             method: "POST",
@@ -1028,7 +1693,11 @@ form.addEventListener(
 
         throw new Error(
           result.error ||
-          "Submission failed."
+          (
+            isUpdate
+              ? "Update failed."
+              : "Submission failed."
+          )
         );
 
       }
@@ -1036,7 +1705,11 @@ form.addEventListener(
 
       showMessage(
 
-        "✓ Home visit saved successfully. Record ID: " +
+        (
+          isUpdate
+            ? "✓ Home visit record updated successfully. Record ID: "
+            : "✓ Home visit saved successfully. Record ID: "
+        ) +
         result.recordId,
 
         "success"
@@ -1046,47 +1719,22 @@ form.addEventListener(
 
       /*
        * Keep class/session.
-       * Only clear student form.
+       * Clear the form and, if we were editing, return
+       * to the plain "New Home Visit" view.
        */
 
-      form.reset();
-
-
-      classSelect.innerHTML =
-        "";
-
-
-      const classOption =
-        document.createElement(
-          "option"
-        );
-
-
-      classOption.value =
-        session.className;
-
-
-      classOption.textContent =
-        displayClass(
-          session.className
-        );
-
-
-      classSelect.appendChild(
-        classOption
+      resetFormForSession(
+        session
       );
 
 
-      classSelect.value =
-        session.className;
+      if (isUpdate) {
 
+        showPanel(
+          "new"
+        );
 
-      populateFormSection(
-        session.section
-      );
-
-
-      setDefaultDate();
+      }
 
 
       window.scrollTo(
@@ -1266,6 +1914,38 @@ function logout() {
 
   message.className =
     "message";
+
+
+  /*
+   * Reset the Edit Record panel/mode so the next
+   * login always starts on the New Home Visit view.
+   */
+
+  newModeButton.classList.add(
+    "active"
+  );
+
+  editModeButton.classList.remove(
+    "active"
+  );
+
+  editPanel.classList.add(
+    "hidden"
+  );
+
+  form.classList.remove(
+    "hidden"
+  );
+
+  cancelEditButton.classList.add(
+    "hidden"
+  );
+
+  submitMode =
+    "create";
+
+  recordIdInput.value =
+    "";
 
 
   window.scrollTo(
