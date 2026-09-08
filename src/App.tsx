@@ -128,6 +128,7 @@ interface FormDataState {
   guardianMistakes: string;
   newStudentName: string;
   newStudentAddress: string;
+  newStudentContact: string;
 }
 
 const initialFormState: FormDataState = {
@@ -162,7 +163,8 @@ const initialFormState: FormDataState = {
   guardianPrograms: '',
   guardianMistakes: '',
   newStudentName: '',
-  newStudentAddress: ''
+  newStudentAddress: '',
+  newStudentContact: ''
 };
 
 export default function App() {
@@ -445,7 +447,8 @@ export default function App() {
           guardianPrograms: rec.guardianPrograms || '',
           guardianMistakes: rec.guardianMistakes || '',
           newStudentName: rec.newStudentName || '',
-          newStudentAddress: rec.newStudentAddress || ''
+          newStudentAddress: rec.newStudentAddress || '',
+          newStudentContact: rec.newStudentContact || ''
         });
 
         // Switch to the form view with update mode active
@@ -1433,7 +1436,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="form-grid grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div className="form-grid grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
                 <div className="field">
                   <label htmlFor="newStudentName" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                     New Student Name
@@ -1459,6 +1462,21 @@ export default function App() {
                     type="text"
                     placeholder="Address or landmark in locality"
                     value={formData.newStudentAddress}
+                    onChange={handleInputChange}
+                    className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-800 transition placeholder:text-slate-400"
+                  />
+                </div>
+
+                <div className="field">
+                  <label htmlFor="newStudentContact" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    New Student Contact
+                  </label>
+                  <input
+                    id="newStudentContact"
+                    name="newStudentContact"
+                    type="tel"
+                    placeholder="Contact / phone number"
+                    value={formData.newStudentContact}
                     onChange={handleInputChange}
                     className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-800 transition placeholder:text-slate-400"
                   />
