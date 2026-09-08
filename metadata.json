@@ -1,0 +1,6 @@
+{
+  "name": "Home Visit Management System",
+  "description": "School student home visit management portal and record collection system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
