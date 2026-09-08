@@ -131,6 +131,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 30px;
   border-radius: 18px;
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
   color: var(--primary-900);
@@ -393,6 +394,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 26px;
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
   color: var(--primary-900);
