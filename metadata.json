@@ -1,6 +1,0 @@
-{
-  "name": "Home Visit Management System",
-  "description": "Comprehensive student home visit management and reporting portal.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Home Visit Management System</title>
-  <meta name="description" content="Comprehensive student home visit management and reporting portal." />
-  <meta property="og:title" content="Home Visit Management System" />
-  <meta property="og:description" content="Comprehensive student home visit management and reporting portal." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css">
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
+
 <body>
+
 
   <!-- =================================================
        LOGIN PORTAL
   ================================================== -->
-  <div id="loginScreen" class="login-screen">
+
+  <div
+    id="loginScreen"
+    class="login-screen"
+  >
+
     <div class="login-card">
+
       <div class="login-icon">
         🏠
       </div>
@@ -31,41 +46,67 @@
         Select your class and enter the password
       </p>
 
-      <div id="loginMessage" class="login-message"></div>
+
+      <div
+        id="loginMessage"
+        class="login-message"
+      ></div>
+
 
       <div class="login-field">
+
         <label for="loginClass">
           Class
         </label>
-        <select id="loginClass">
+
+        <select
+          id="loginClass"
+        >
+
           <option value="">
             Loading classes...
           </option>
+
         </select>
+
       </div>
 
+
       <div class="login-field">
+
         <label for="loginSection">
           Section
         </label>
-        <select id="loginSection" disabled>
+
+        <select
+          id="loginSection"
+          disabled
+        >
+
           <option value="">
             Select class first
           </option>
+
         </select>
+
       </div>
 
+
       <div class="login-field">
+
         <label for="loginPin">
           Class PIN
         </label>
+
         <div class="pin-wrapper">
+
           <input
             id="loginPin"
             type="password"
             placeholder="Enter class PIN"
             autocomplete="off"
           >
+
           <button
             type="button"
             id="togglePin"
@@ -73,58 +114,95 @@
           >
             Show
           </button>
+
         </div>
+
       </div>
 
-      <button id="loginButton" class="login-button">
+
+      <button
+        id="loginButton"
+        class="login-button"
+      >
+
         <span>
           Enter Portal
         </span>
+
         <span>
           →
         </span>
+
       </button>
+
 
       <p class="login-note">
         You only need to enter the PIN once.
       </p>
+
     </div>
+
   </div>
+
+
 
   <!-- =================================================
        MAIN APPLICATION
   ================================================== -->
-  <div id="app" class="app hidden">
+
+  <div
+    id="app"
+    class="app hidden"
+  >
+
     <div class="page">
 
+
       <!-- HEADER -->
+
       <header class="header">
+
         <div class="header-left">
+
           <div class="header-icon">
             🏠
           </div>
+
           <div>
+
             <div class="system-label">
               HOME VISIT MANAGEMENT SYSTEM
             </div>
+
             <h1>
               Home Visit Form
             </h1>
+
             <p>
               Record student home visit information
             </p>
+
           </div>
+
         </div>
 
+
         <div class="session-area">
+
           <div class="logged-class">
+
             <span>
               Logged in as
             </span>
-            <strong id="activeClass">
+
+            <strong
+              id="activeClass"
+            >
               —
             </strong>
+
           </div>
+
 
           <button
             type="button"
@@ -133,14 +211,24 @@
           >
             Logout
           </button>
+
         </div>
+
       </header>
 
+
       <!-- MESSAGE -->
-      <div id="message" class="message"></div>
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
 
       <!-- MODE SWITCH -->
+
       <div class="mode-switch">
+
         <button
           type="button"
           id="newModeButton"
@@ -149,6 +237,7 @@
         >
           + New Home Visit
         </button>
+
         <button
           type="button"
           id="editModeButton"
@@ -157,30 +246,50 @@
         >
           ✎ Edit Existing Record
         </button>
+
       </div>
 
+
       <!-- EDIT PANEL -->
-      <div id="editPanel" class="edit-panel hidden">
+
+      <div
+        id="editPanel"
+        class="edit-panel hidden"
+      >
+
         <div class="edit-header">
+
           <h2>
             Edit Existing Record
           </h2>
+
           <p>
             Select a student you already recorded during a home visit for this class/section to update their information.
           </p>
+
         </div>
 
+
         <div class="edit-search">
+
           <div class="field">
+
             <label for="editStudentSelect">
               Select Student
             </label>
-            <select id="editStudentSelect">
+
+            <select
+              id="editStudentSelect"
+            >
+
               <option value="">
                 Loading students...
               </option>
+
             </select>
+
           </div>
+
 
           <button
             type="button"
@@ -189,13 +298,26 @@
           >
             Load Record
           </button>
+
         </div>
 
-        <div id="recordStatus" class="record-status"></div>
+
+        <div
+          id="recordStatus"
+          class="record-status"
+        ></div>
+
       </div>
 
+
+
       <!-- FORM -->
-      <form id="homeVisitForm" autocomplete="off">
+
+      <form
+        id="homeVisitForm"
+        autocomplete="off"
+      >
+
         <input
           type="hidden"
           id="recordId"
@@ -203,28 +325,42 @@
           value=""
         >
 
+
         <!-- STUDENT INFORMATION -->
+
         <section class="card">
+
           <div class="section-heading">
+
             <div class="section-number">
               01
             </div>
+
             <div>
+
               <h2>
                 Student Information
               </h2>
+
               <p>
                 Enter the basic information of the student.
               </p>
+
             </div>
+
           </div>
 
+
           <div class="form-grid">
+
+
             <div class="field full">
+
               <label for="studentName">
                 Student Name
                 <span>*</span>
               </label>
+
               <input
                 id="studentName"
                 name="studentName"
@@ -232,41 +368,55 @@
                 placeholder="Enter student name"
                 required
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="className">
                 Class
                 <span>*</span>
               </label>
+
               <select
                 id="className"
                 name="className"
                 required
               ></select>
+
             </div>
 
+
             <div class="field">
+
               <label for="section">
                 Section
                 <span>*</span>
               </label>
+
               <select
                 id="section"
                 name="section"
                 required
               >
+
                 <option value="">
                   Select Section
                 </option>
+
               </select>
+
             </div>
 
+
             <div class="field">
+
               <label for="rollNo">
                 Roll Number
                 <span>*</span>
               </label>
+
               <input
                 id="rollNo"
                 name="rollNo"
@@ -275,12 +425,16 @@
                 placeholder="Roll number"
                 required
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="siblings">
                 No. of Siblings
               </label>
+
               <input
                 id="siblings"
                 name="siblings"
@@ -288,139 +442,194 @@
                 min="0"
                 placeholder="Number of siblings"
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="fatherName">
                 Father's Name
               </label>
+
               <input
                 id="fatherName"
                 name="fatherName"
                 type="text"
                 placeholder="Father's name"
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="motherName">
                 Mother's Name
               </label>
+
               <input
                 id="motherName"
                 name="motherName"
                 type="text"
                 placeholder="Mother's name"
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="occupation">
                 Occupation
               </label>
+
               <input
                 id="occupation"
                 name="occupation"
                 type="text"
                 placeholder="Parent/Guardian occupation"
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="contact">
                 Contact Number
               </label>
+
               <input
                 id="contact"
                 name="contact"
                 type="tel"
                 placeholder="Contact number"
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="visitDate">
                 Visit Date
               </label>
+
               <input
                 id="visitDate"
                 name="visitDate"
                 type="date"
               >
+
             </div>
 
+
             <div class="field full">
+
               <label for="address">
                 Address
               </label>
+
               <textarea
                 id="address"
                 name="address"
                 rows="3"
                 placeholder="Enter student's address"
               ></textarea>
+
             </div>
+
           </div>
+
         </section>
 
+
+
         <!-- HOME ACTIVITIES -->
+
         <section class="card">
+
           <div class="section-heading">
+
             <div class="section-number">
               02
             </div>
+
             <div>
+
               <h2>
                 Home Activities
               </h2>
+
               <p>
                 Information about the student's activities at home.
               </p>
+
             </div>
+
           </div>
 
+
           <div class="field">
+
             <label for="readingHomework">
               Where does the student do reading homework?
             </label>
+
             <textarea
               id="readingHomework"
               name="readingHomework"
               rows="3"
               placeholder="Write your answer..."
             ></textarea>
+
           </div>
 
+
           <div class="field">
+
             <label for="writingHomework">
               Where does the student do writing homework?
             </label>
+
             <textarea
               id="writingHomework"
               name="writingHomework"
               rows="3"
               placeholder="Write your answer..."
             ></textarea>
+
           </div>
 
+
           <div class="field">
+
             <label for="interestedIn">
               What is the student interested in?
             </label>
+
             <textarea
               id="interestedIn"
               name="interestedIn"
               rows="3"
               placeholder="Sports, music, drawing, reading, etc."
             ></textarea>
+
           </div>
 
+
+
           <!-- RADIO QUESTIONS -->
+
           <div class="question">
+
             <label>
               Behaviour With Family
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -429,6 +638,7 @@
                 >
                 <span>Good</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -437,6 +647,7 @@
                 >
                 <span>Average</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -445,14 +656,20 @@
                 >
                 <span>Bad</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Response To Guests
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -461,6 +678,7 @@
                 >
                 <span>Properly</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -469,6 +687,7 @@
                 >
                 <span>Average</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -477,14 +696,20 @@
                 >
                 <span>Coldly</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Keeps Things In Original Place
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -493,6 +718,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -501,6 +727,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -509,14 +736,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Eats Junk Food
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -525,6 +758,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -533,6 +767,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -541,14 +776,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Mobile / Laptop Usage
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -557,6 +798,7 @@
                 >
                 <span>Properly</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -565,6 +807,7 @@
                 >
                 <span>Commonly</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -573,14 +816,20 @@
                 >
                 <span>Too Much</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Watch TV
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -589,6 +838,7 @@
                 >
                 <span>Sometimes Only</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -597,6 +847,7 @@
                 >
                 <span>Commonly</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -605,14 +856,20 @@
                 >
                 <span>Too Much</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Assists Household Activities
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -621,6 +878,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -629,6 +887,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -637,14 +896,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Washes Personal Clothes / Dishes
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -653,6 +918,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -661,6 +927,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -669,43 +936,66 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="field">
+
             <label for="schoolOpinion">
               What does the student say about school, teacher and friends?
             </label>
+
             <textarea
               id="schoolOpinion"
               name="schoolOpinion"
               rows="4"
               placeholder="Write the student's response..."
             ></textarea>
+
           </div>
+
         </section>
 
+
+
         <!-- GUARDIAN -->
+
         <section class="card">
+
           <div class="section-heading">
+
             <div class="section-number">
               03
             </div>
+
             <div>
+
               <h2>
                 Guardian Information
               </h2>
+
               <p>
                 Information about guardian involvement.
               </p>
+
             </div>
+
           </div>
 
-          <div class="question">
+
+          <div
+            class="question"
+          >
+
             <label>
               Guardian Appreciates Child
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -714,6 +1004,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -722,6 +1013,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -730,14 +1022,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Guardian Involves Child In Social Activities
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -746,6 +1044,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -754,6 +1053,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -762,14 +1062,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Guardian Keeps Child Informed About Family
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -778,6 +1084,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -786,6 +1093,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -794,14 +1102,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Guardian Gives Time To Child
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -810,6 +1124,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -818,6 +1133,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -826,14 +1142,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Guardian Attends Guardian Programs
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -842,6 +1164,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -850,6 +1173,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -858,14 +1182,20 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
 
+
           <div class="question">
+
             <label>
               Guardian Encourages Child Despite Simple Mistakes
             </label>
+
             <div class="options">
+
               <label class="option">
                 <input
                   type="radio"
@@ -874,6 +1204,7 @@
                 >
                 <span>Yes</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -882,6 +1213,7 @@
                 >
                 <span>No</span>
               </label>
+
               <label class="option">
                 <input
                   type="radio"
@@ -890,65 +1222,96 @@
                 >
                 <span>Sometimes</span>
               </label>
+
             </div>
+
           </div>
+
         </section>
 
+
+
         <!-- NEW STUDENT -->
+
         <section class="card">
+
           <div class="section-heading">
+
             <div class="section-number">
               04
             </div>
+
             <div>
+
               <h2>
                 New Student Information
               </h2>
+
               <p>
                 Enter details if another student is identified during the visit.
               </p>
+
             </div>
+
           </div>
 
+
           <div class="form-grid">
+
             <div class="field">
+
               <label for="newStudentName">
                 New Student Name
               </label>
+
               <input
                 id="newStudentName"
                 name="newStudentName"
                 type="text"
                 placeholder="Student name"
               >
+
             </div>
 
+
             <div class="field">
+
               <label for="newStudentAddress">
                 New Student Address
               </label>
+
               <input
                 id="newStudentAddress"
                 name="newStudentAddress"
                 type="text"
                 placeholder="Student address"
               >
+
             </div>
+
           </div>
+
         </section>
 
+
+
         <!-- SUBMIT -->
+
         <div class="submit-area">
+
           <button
             type="submit"
             id="submitButton"
           >
+
             <span>
               Submit Home Visit
             </span>
+
             <span>
               →
             </span>
+
           </button>
 
           <button
@@ -962,42 +1325,66 @@
           <p>
             Review the information before submitting.
           </p>
+
         </div>
+
+
       </form>
 
+
+
       <!-- FOOTER -->
+
       <footer class="site-footer">
+
         <div class="footer-brand">
           Home Visit Management System
         </div>
 
         <div class="developers">
+
           <div class="developer">
+
             <strong>
               Jay Bhandari
             </strong>
+
             <a href="tel:9744313036">
               9744313036
             </a>
+
           </div>
+
 
           <span class="footer-dot">
             •
           </span>
 
+
           <div class="developer">
+
             <strong>
               Bishal Somare
             </strong>
+
             <a href="tel:9848134815">
               9848134815
             </a>
+
           </div>
+
         </div>
+
       </footer>
+
     </div>
+
   </div>
 
-  <script type="module" src="/script.js"></script>
+
+  <script src="script.js"></script>
+
 </body>
+
 </html>
+
